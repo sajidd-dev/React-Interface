@@ -22,6 +22,12 @@ class App extends Component {
       myAppointments : temApts
     })
     }
+
+    toggleForm = () => {
+      this.setState({
+        formDisplay: !this.state.formDisplay
+      })
+    }
     
   componentDidMount(){
     fetch('./data.json')
@@ -48,8 +54,10 @@ class App extends Component {
             <div className="col-md-12 bg-white">
               <div className="container">
               
-                <AddAppointments formDisplay={this.state.formDisplay} />
-                <ListAppointments appointments={this.state.myAppointments} deleteAppointment={this.deleteAppointment} />
+                <AddAppointments formDisplay={this.state.formDisplay}
+                 toggleForm={this.toggleForm}/>
+                <ListAppointments appointments={this.state.myAppointments}
+                 deleteAppointment={this.deleteAppointment} />
                 <SeachAppointments  />
               </div>
             </div>
