@@ -10,6 +10,7 @@ class App extends Component {
     super()
     this.state = {
       myAppointments : [],
+      formDisplay:false,
       lastIndex : 0
     }
   }
@@ -47,7 +48,7 @@ class App extends Component {
             <div className="col-md-12 bg-white">
               <div className="container">
               
-                <AddAppointments  />
+                <AddAppointments formDisplay={this.state.formDisplay} />
                 <ListAppointments appointments={this.state.myAppointments} deleteAppointment={this.deleteAppointment} />
                 <SeachAppointments  />
               </div>
