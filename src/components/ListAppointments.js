@@ -32,7 +32,7 @@ class ListAppointments extends Component {
                                 </div>
                                 <div className="owner-name">
                                     <span className="label-item">Owner: </span>
-                                    <span>{item.OwnerName}</span>
+                                    <span>{item.ownerName}</span>
                                 </div>
                                 <div className="apt-notes">{item.aptNotes}</div>
                             </div>
