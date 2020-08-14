@@ -31,7 +31,7 @@ class ListAppointments extends Component {
                     )
                   }
                 >
-                  {item.aptId}--{item.petName}
+                {item.petName}
                 </span>
                 <span className="apt-date ml-auto">
                   <Moment
