@@ -3,20 +3,34 @@ import '../css/App.css';
 import AddAppointments from './AddAppointments';
 import ListAppointments from './ListAppointments';
 import SeachAppointments from './SearchAppointments';
+import { without } from 'lodash';
 
 class App extends Component {
   constructor(){
     super()
     this.state = {
-      myAppointments : []
+      myAppointments : [],
+      lastIndex : 0
     }
   }
 
+  deleteAppointment = (apt) => {
+    let temApts = this.state.myAppointments;
+    temApts = without(temApts,apt);
+    this.setState({
+      myAppointments : temApts
+    })
+    }
+    
   componentDidMount(){
     fetch('./data.json')
     .then(response => response.json())
     .then(result => {
       const apts = result.map(item => {
+        item.aptId = this.state.lastIndex;
+        this.setState({
+          lastIndex : this.state.lastIndex + 1
+        });
         return item;
       })
       this.setState({
@@ -34,7 +48,7 @@ class App extends Component {
               <div className="container">
               
                 <AddAppointments  />
-                <ListAppointments appointments={this.state.myAppointments} />
+                <ListAppointments appointments={this.state.myAppointments} deleteAppointment={this.deleteAppointment} />
                 <SeachAppointments  />
               </div>
             </div>
