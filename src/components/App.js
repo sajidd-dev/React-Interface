@@ -3,7 +3,7 @@ import '../css/App.css';
 import AddAppointments from './AddAppointments';
 import ListAppointments from './ListAppointments';
 import SeachAppointments from './SearchAppointments';
-import { without } from 'lodash';
+import { without, findIndex } from 'lodash';
 
 class App extends Component {
   constructor(){
@@ -26,6 +26,17 @@ class App extends Component {
     })
     }
 
+    updateInfo = (name,value,id) => {
+      let tempApts = this.state.myAppointments;
+      let aptIndex = findIndex(this.state.myAppointments, {
+        aptId : id
+      })
+
+      tempApts[aptIndex][name] = value;
+      this.setState({
+        myAppointments : tempApts
+      })
+    }
     toggleForm = () => {
       this.setState({
         formDisplay: !this.state.formDisplay
@@ -84,7 +95,7 @@ class App extends Component {
       } else {
         return 1 * order;
       }
-    }).filter(eachItem => {
+    }).filter(eachItem => { 
       return (
         eachItem['petName']
         .toLowerCase()
@@ -113,8 +124,10 @@ class App extends Component {
                 formDisplay={this.state.formDisplay}
                  toggleForm={this.toggleForm}
                  addAppointment={this.addAppointment}/>
-                <ListAppointments appointments={filterApts}
-                 deleteAppointment={this.deleteAppointment} />
+                <ListAppointments 
+                appointments={filterApts}
+                 deleteAppointment={this.deleteAppointment}
+                 updateInfo={this.updateInfo} />
               </div>
             </div>
           </div>
@@ -123,5 +136,4 @@ class App extends Component {
     );
   }
 }
-
 export default App;
