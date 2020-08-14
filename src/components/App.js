@@ -10,7 +10,7 @@ class App extends Component {
     super()
     this.state = {
       myAppointments : [],
-      orderBy: 'petName',
+      orderBy: '',
       orderDir: 'asc',
       formDisplay:false,
       qyeryText : '',
@@ -90,6 +90,9 @@ class App extends Component {
       order = -1;
     }
    filterApts = filterApts.sort((a,b) => {
+     if(this.state.orderBy === ""){
+       return ""
+     }else
       if(a[this.state.orderBy].toLowerCase() < b[this.state.orderBy].toLowerCase()){
         return -1 * order;
       } else {
