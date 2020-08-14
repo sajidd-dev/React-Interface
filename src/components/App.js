@@ -10,7 +10,10 @@ class App extends Component {
     super()
     this.state = {
       myAppointments : [],
+      orderBy: 'petName',
+      orderDir: 'asc',
       formDisplay:false,
+      qyeryText : '',
       lastIndex : 0
     }
   }
@@ -37,6 +40,19 @@ class App extends Component {
           lastIndex: this.state.lastIndex + 1
         })
     }
+    changeOrder = (order, dir) => {
+      this.setState({
+        orderBy : order,
+        orderDir : dir
+      })
+    }
+
+    searchApts = (query) => {
+      this.setState({
+        qyeryText : query
+      })
+    }
+
     
   componentDidMount(){
     fetch('./data.json')
@@ -55,21 +71,50 @@ class App extends Component {
     });
   }
   render() {
-   
+   let order;
+    let filterApts = this.state.myAppointments;
+    if(this.state.orderDir === 'asc'){
+      order = 1;
+    }else{
+      order = -1;
+    }
+   filterApts = filterApts.sort((a,b) => {
+      if(a[this.state.orderBy].toLowerCase() < b[this.state.orderBy].toLowerCase()){
+        return -1 * order;
+      } else {
+        return 1 * order;
+      }
+    }).filter(eachItem => {
+      return (
+        eachItem['petName']
+        .toLowerCase()
+        .includes(this.state.qyeryText.toLowerCase()) ||
+        eachItem['ownerName']
+        .toLowerCase()
+        .includes(this.state.qyeryText.toLowerCase()) ||
+        eachItem['aptNotes']
+        .toLowerCase()
+        .includes(this.state.qyeryText.toLowerCase())
+      );
+    })
     return (
       <main  className="page bg-white" id="petratings">
         <div className="container">
           <div className="row">
             <div className="col-md-12 bg-white">
               <div className="container">
-              
+                <SeachAppointments 
+                 orderBy={this.state.orderBy}
+                 orderDir={this.state.orderDir}
+                 changeOrder={this.changeOrder}
+                 searchApts={this.searchApts}
+                 />
                 <AddAppointments 
                 formDisplay={this.state.formDisplay}
                  toggleForm={this.toggleForm}
                  addAppointment={this.addAppointment}/>
-                <ListAppointments appointments={this.state.myAppointments}
+                <ListAppointments appointments={filterApts}
                  deleteAppointment={this.deleteAppointment} />
-                <SeachAppointments  />
               </div>
             </div>
           </div>
